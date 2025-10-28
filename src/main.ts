@@ -5,7 +5,7 @@ import { Application, Assets, Sprite } from "pixi.js";
   const app = new Application();
 
   // Initialize the application
-  await app.init({ width : 320, height : 240, background: "#1099bb"});
+  await app.init({ width : 900, height : 600, background: "#1099bb"});
 
   // Append the application canvas to the document body
   document.getElementById("pixi-container")!.appendChild(app.canvas);
@@ -25,11 +25,18 @@ import { Application, Assets, Sprite } from "pixi.js";
   var speed = 0;
     const minimumY = app.screen.height
     const groundY = app.screen.height - app.screen.height/2;
-  // Add the bunny to the stage
+    // Add the bunny to the stage
+    let canJump : boolean = true;
     app.stage.addChild(bunny);
     window.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && canJump) {
+            speed = -3;
+            canJump = false;
+        }
+    });
+    window.addEventListener('keyup', (e) => {
         if (e.code === 'Space') {
-            speed += -5;
+            canJump = true;
         }
     });
   // Listen for animate update
@@ -46,6 +53,7 @@ import { Application, Assets, Sprite } from "pixi.js";
       }
       if (bunny.position.y < 0) {
           bunny.position.y = 0;
+          speed = 0;
       }
   });
 })();
